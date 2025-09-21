@@ -13,8 +13,6 @@ public interface IUserService
     Task<HttpResponseWrapper<UserDto>> Delete(string uuid);
 
     Task<HttpResponseWrapper<UserDto>> Edit(string uuid, EditUser editUser);
-    Task<ICollection<UserDto>> Search(string? name,
-        string? email,
-        bool? searchByIsDesactive);
+    Task<HttpResponseWrapper<ICollection<UserDto>>> Search(string parametersAsUrl);
     
 }

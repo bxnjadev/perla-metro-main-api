@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Text.Json;
-using perla_metro_main_api.Dto;
+﻿using perla_metro_main_api.Dto;
 using perla_metro_main_api.Util;
 
 namespace perla_metro_main_api.Service;
@@ -9,6 +7,7 @@ public class UserService(
     HttpClient httpClient,
     string route = Routes.UserRoute) : IUserService
 {
+    
     public async Task<HttpResponseWrapper<UserDto>> Create(CreationUserRequest creationUser)
     {
         var definitiveRoute = route + "/create";
@@ -17,12 +16,8 @@ public class UserService(
             .Body(creationUser)
             .Build()
         );
-
-        var statusCode = (int) response.StatusCode;
-        var content = response.Content;
-        var body = await content.ReadAsStringAsync();
-
-        return new HttpResponseWrapper<UserDto>(body, statusCode);
+        
+        return await HttpResponseWrapper<UserDto>.Create(response);
     }
     
     public async Task<HttpResponseWrapper<UserDto>> Edit(string uuid, EditUser editUser)
@@ -32,42 +27,36 @@ public class UserService(
             .ContentTypeJson()
             .Body(editUser)
             .Build());
+        
+        return await HttpResponseWrapper<UserDto>.Create(response);
+    }
 
-        var statusCode = (int)response.StatusCode;
-        var content = response.Content;
-        var body = await content.ReadAsStringAsync();
+    public async Task<HttpResponseWrapper<ICollection<UserDto>>> Search(string parametersAsUrl)
+    {
+        var definitiveRoute = route + "/search" + parametersAsUrl;
+        var response = await httpClient.
+            GetAsync(definitiveRoute);
 
-        return new HttpResponseWrapper<UserDto>(body, statusCode);
+        return await HttpResponseWrapper<ICollection<UserDto>>.Create(response);
     }
 
 
     public async Task<HttpResponseWrapper<UserDto>> Find(string uuid)
     {
-        var definitiveRoute = route + "/find" + uuid;
+        var definitiveRoute = route + "/find/" + uuid;
         var response = await httpClient.GetAsync(definitiveRoute);
 
-        var statusCode = (int)response.StatusCode;
-        var content = response.Content;
-        var body = await content.ReadAsStringAsync();
-
-        return new HttpResponseWrapper<UserDto>(body, statusCode);
+        return await HttpResponseWrapper<UserDto>.Create(response);
     }
 
     public async Task<HttpResponseWrapper<UserDto>> Delete(string uuid)
     {
-        var definitiveRoute = route + "/delete" + uuid;
+        var definitiveRoute = route + "/delete/" + uuid;
         var response = await httpClient.DeleteAsync(definitiveRoute);
 
-        var statusCode = (int)response.StatusCode;
-        var content = response.Content;
-        var body = await content.ReadAsStringAsync();
-
-        return new HttpResponseWrapper<UserDto>(body, statusCode);
+        return await HttpResponseWrapper<UserDto>.Create(response);
     }
-    public Task<ICollection<UserDto>> Search(string? name, string? email, bool? searchByIsDesactive)
-    {
-        throw new NotImplementedException();
-    }
+    
     
 }
 

@@ -17,7 +17,7 @@ public class HttpResponseWrapper<TO>
 
     public bool IsOk()
     {
-        return _statusCode >= 200 || _statusCode < 300;
+        return _statusCode >= 200 && _statusCode < 300;
     }
 
     public string GetContent()
@@ -40,4 +40,13 @@ public class HttpResponseWrapper<TO>
         return JsonSerializer.Deserialize<TO>(_content);
     }
 
+    public static async Task<HttpResponseWrapper<TO>> Create(HttpResponseMessage response)
+    {
+        var statusCode = (int) response.StatusCode;
+        var content = response.Content;
+        var body = await content.ReadAsStringAsync();
+
+        return new HttpResponseWrapper<TO>(body, statusCode);
+    }
+    
 }
