@@ -79,6 +79,7 @@ public class UserController(IUserService userService) : ControllerBase
         HttpResponseWrapper<ICollection<UserDto>> response;
         if (sections.Length == 1)
         {
+            Console.WriteLine("helllo world");
             response = await userService.Search("");
         }
         else
