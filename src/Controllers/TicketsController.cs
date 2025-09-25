@@ -53,7 +53,7 @@ public class TicketsController : ControllerBase
             return BadRequest("El parámetro 'admin' debe ser true para acceder a esta ruta.");
         }
 
-        var response = await _httpClient.GetAsync(TicketsServiceUrl);
+        var response = await _httpClient.GetAsync($"{TicketsServiceUrl}?admin={admin}");
         var content = await response.Content.ReadAsStringAsync();
 
         return StatusCode((int)response.StatusCode, content);
@@ -70,6 +70,13 @@ public class TicketsController : ControllerBase
     [HttpPatch("{id}")]
     public async Task<ActionResult> UpdateTicket(string id, [FromBody] UpdateTicketRequest request)
     {
+        var ticketPayload= new
+        {
+            date = request.Date,
+            type = request.Type,
+            status = request.Status,
+            paid = request.Paid
+        };
 
         var response = await _httpClient.PatchAsJsonAsync($"{TicketsServiceUrl}/{id}", ticketPayload);
         var content = await response.Content.ReadAsStringAsync();
@@ -83,7 +90,7 @@ public class TicketsController : ControllerBase
         {
             return BadRequest("El parámetro 'admin' debe ser true para acceder a esta ruta.");
         }
-        var response = await _httpClient.DeleteAsync($"{TicketsServiceUrl}/{id}?admin ={admin}");
+        var response = await _httpClient.DeleteAsync($"{TicketsServiceUrl}/{id}?admin={admin}");
         var content = await response.Content.ReadAsStringAsync();
 
         return StatusCode((int)response.StatusCode, content);

@@ -17,5 +17,5 @@ public class CreateTicketRequest
 
     [Required]
     [Range(1, double.MaxValue, ErrorMessage = "El valor debe ser mayor que 0")]
-    public bool Paid { get; set; }
+    public decimal Paid { get; set; }
 }
