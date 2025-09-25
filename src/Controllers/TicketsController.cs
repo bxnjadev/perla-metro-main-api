@@ -68,7 +68,7 @@ public class TicketsController : ControllerBase
     }
 
     [HttpPatch("{id}")]
-    public async Task<ActionResult> UpdateTicket(string id, [FromBody] UpdateTicketRequest request)
+    public async Task<ActionResult> UpdateTicket(string id, [FromBody] EditTicket request)
     {
         var ticketPayload= new
         {
