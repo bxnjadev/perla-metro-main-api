@@ -12,13 +12,16 @@ public class TicketsController : ControllerBase
 {
     private readonly HttpClient _httpClient;
     private readonly IUserService _userService;
+    private readonly ITicketService _ticketService;
 
     private const string TicketsServiceUrl = "https://perla-metro-tickets.onrender.com/api/tickets";
 
-    public TicketsController(HttpClient httpClient, IUserService userService)
+    public TicketsController(HttpClient httpClient, IUserService userService,
+        ITicketService ticketService)
     {
         _httpClient = httpClient;
         _userService = userService;
+        _ticketService = ticketService;
     }
 
     [HttpPost("crear")]
@@ -29,19 +32,9 @@ public class TicketsController : ControllerBase
         {
             return BadRequest("El usuario especificado no existe");
         }
-        var ticketPayload = new
-        {
-            passengerId = request.PassengerId,
-            date = request.Date,
-            type = request.Type,
-            status = request.Status,
-            paid = request.Paid
-        };
 
-        var response = await _httpClient.PostAsJsonAsync(TicketsServiceUrl, ticketPayload);
-        var content = await response.Content.ReadAsStringAsync();
-
-        return StatusCode((int)response.StatusCode, content);
+        var response = await _ticketService.Create(request);
+        return StatusCode(response.GetStatusCode(),response.GetContent());
 
     }
 
@@ -53,35 +46,24 @@ public class TicketsController : ControllerBase
             return BadRequest("El parámetro 'admin' debe ser true para acceder a esta ruta.");
         }
 
-        var response = await _httpClient.GetAsync($"{TicketsServiceUrl}?admin={admin.ToString().ToLower()}");
-        var content = await response.Content.ReadAsStringAsync();
-
-        return StatusCode((int)response.StatusCode, content);
+        var response = await _ticketService.GetAll(admin);
+        return StatusCode(response.GetStatusCode(), response.GetContent());
     }
+    
     [HttpGet("buscar/{id}")]
     public async Task<ActionResult> GetTicketById(string id)
     {
-        var response = await _httpClient.GetAsync($"{TicketsServiceUrl}/buscar/{id}");
-        var content = await response.Content.ReadAsStringAsync();
+        var response = await _ticketService.GetById(id);
 
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode(response.GetStatusCode(), response.GetContent());
     }
 
     [HttpPatch("actualizar/{id}")]
     public async Task<ActionResult> UpdateTicket(string id, [FromBody] EditTicket request)
     {
-        var ticketPayload = new
-        {
-            date = request.Date,
-            type = request.Type,
-            status = request.Status,
-            paid = request.Paid
-        };
+        var response =  await _ticketService.Update(id, request);
 
-        var response = await _httpClient.PatchAsJsonAsync($"{TicketsServiceUrl}/actualizar/{id}", ticketPayload);
-        var content = await response.Content.ReadAsStringAsync();
-
-        return StatusCode((int)response.StatusCode, content);
+        return StatusCode(response.GetStatusCode(), response.GetContent());
     }
     [HttpDelete("eliminar/{id}")]
     public async Task<ActionResult> DeleteTicket(string id, [FromQuery] bool admin = false)
@@ -90,10 +72,10 @@ public class TicketsController : ControllerBase
         {
             return BadRequest("El parámetro 'admin' debe ser true para acceder a esta ruta.");
         }
-        var response = await _httpClient.DeleteAsync($"{TicketsServiceUrl}/eliminar/{id}?admin={admin.ToString().ToLower()}");
-        var content = await response.Content.ReadAsStringAsync();
 
-        return StatusCode((int)response.StatusCode, content);
+        var response = await _ticketService.SoftDelete(id);
+
+        return StatusCode(response.GetStatusCode(), response.GetContent());
     }
 
     [HttpGet("crear")]
