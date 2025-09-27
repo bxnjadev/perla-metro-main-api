@@ -13,7 +13,7 @@ public class TicketsController : ControllerBase
     private readonly HttpClient _httpClient;
     private readonly IUserService _userService;
 
-    private const string TicketsServiceUrl = "http://localhost:5050/tickets";
+    private const string TicketsServiceUrl = "https://perla-metro-tickets.onrender.com/api/tickets";
 
     public TicketsController(HttpClient httpClient, IUserService userService)
     {
@@ -21,7 +21,7 @@ public class TicketsController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost]
+    [HttpPost("crear")]
     public async Task<ActionResult> CreateTicket([FromBody] CreateTicketRequest request)
     {
         var userResponse = await _userService.Find(request.PassengerId);
@@ -45,7 +45,7 @@ public class TicketsController : ControllerBase
 
     }
 
-    [HttpGet]
+    [HttpGet("obtener")]
     public async Task<ActionResult> GetTickets([FromQuery] bool admin = false)
     {
         if (!admin)
@@ -58,19 +58,19 @@ public class TicketsController : ControllerBase
 
         return StatusCode((int)response.StatusCode, content);
     }
-    [HttpGet("{id}")]
+    [HttpGet("buscar/{id}")]
     public async Task<ActionResult> GetTicketById(string id)
     {
-        var response = await _httpClient.GetAsync($"{TicketsServiceUrl}/{id}");
+        var response = await _httpClient.GetAsync($"{TicketsServiceUrl}/buscar/{id}");
         var content = await response.Content.ReadAsStringAsync();
 
         return StatusCode((int)response.StatusCode, content);
     }
 
-    [HttpPatch("{id}")]
+    [HttpPatch("actualizar/{id}")]
     public async Task<ActionResult> UpdateTicket(string id, [FromBody] EditTicket request)
     {
-        var ticketPayload= new
+        var ticketPayload = new
         {
             date = request.Date,
             type = request.Type,
@@ -78,21 +78,46 @@ public class TicketsController : ControllerBase
             paid = request.Paid
         };
 
-        var response = await _httpClient.PatchAsJsonAsync($"{TicketsServiceUrl}/{id}", ticketPayload);
+        var response = await _httpClient.PatchAsJsonAsync($"{TicketsServiceUrl}/actualizar/{id}", ticketPayload);
         var content = await response.Content.ReadAsStringAsync();
 
         return StatusCode((int)response.StatusCode, content);
     }
-    [HttpDelete("{id}")]
+    [HttpDelete("eliminar/{id}")]
     public async Task<ActionResult> DeleteTicket(string id, [FromQuery] bool admin = false)
     {
         if (!admin)
         {
             return BadRequest("El parámetro 'admin' debe ser true para acceder a esta ruta.");
         }
-        var response = await _httpClient.DeleteAsync($"{TicketsServiceUrl}/{id}?admin={admin.ToString().ToLower()}");
+        var response = await _httpClient.DeleteAsync($"{TicketsServiceUrl}/eliminar/{id}?admin={admin.ToString().ToLower()}");
         var content = await response.Content.ReadAsStringAsync();
 
         return StatusCode((int)response.StatusCode, content);
     }
+
+    [HttpGet("crear")]
+    public async Task<ActionResult> CreateTicketInfo()
+    {
+        var response = await _httpClient.GetAsync($"{TicketsServiceUrl}/crear");
+        var content = await response.Content.ReadAsStringAsync();
+        return StatusCode((int)response.StatusCode, content);
+    }
+
+    [HttpGet("actualizar/{id}")]
+    public async Task<ActionResult> GetTicketByIdInfo(string id)
+    {
+        var response = await _httpClient.GetAsync($"{TicketsServiceUrl}/actualizar/{id}");
+        var content = await response.Content.ReadAsStringAsync();
+        return StatusCode((int)response.StatusCode, content);
+    }
+
+    [HttpGet("eliminar/{id}")]
+    public async Task<ActionResult> DeleteTicketInfo(string id)
+    {
+        var response = await _httpClient.GetAsync($"{TicketsServiceUrl}/eliminar/{id}");
+        var content = await response.Content.ReadAsStringAsync();
+        return StatusCode((int)response.StatusCode, content);
+    }
+    
 }
