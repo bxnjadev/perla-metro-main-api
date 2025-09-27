@@ -12,12 +12,12 @@ public class RouteService(
     {
         var definitiveRoute = route + "/";
 
-        // previamente verificar si las rutas existen
+        // previamente verificar si las estaciones existen
 
-        /*if ( rutas existen){
-            return new await HttpResponseWrapper<RouteDto>("Las rutas no existen", 404);
+        /*if ( estaciones existen){
+            return new await HttpResponseWrapper<RouteDto>("Las estaciones no existen", 404);
         }*/
-        
+
         var response = await httpClient.PostAsync(definitiveRoute, StringContentBuilder.Builder()
             .ContentTypeJson()
             .Body(routeDto)
@@ -32,18 +32,30 @@ public class RouteService(
         throw new NotImplementedException();
     }
 
-    public Task<HttpResponseWrapper<RouteDto>> Find(int id)
+    public Task<HttpResponseWrapper<RouteDto>> Find(string uuid)
     {
-        throw new NotImplementedException();
+        var definitiveRoute = route + "/" + uuid;
+        var response = httpClient.GetAsync(definitiveRoute);
+
+        return await HttpResponseWrapper<RouteDto>.Create(response);
     }
 
-    public Task<HttpResponseWrapper<RouteDto>> EditRoute(int id, EditRoute editRoute)
-    { 
-        throw new NotImplementedException();
+    public async Task<HttpResponseWrapper<RouteDto>> EditRoute(string uuid, EditRoute editRoute)
+    {
+        var definitiveRoute = route + "/" + uuid;
+        var response = httpClient.PutAsync(definitiveRoute, StringContentBuilder.Builder()
+            .ContentTypeJson()
+            .Body(editRoute)
+            .Build());
+            
+        return await HttpResponseWrapper<RouteDto>.Create(response);
     }
 
-    public Task<HttpResponseWrapper<RouteDto>> Delete(int id)
+    public async Task<HttpResponseWrapper<RouteDto>> Delete(string uuid)
     {
-        throw new NotImplementedException();
+        var definitiveRoute = route + "/" + uuid;
+        var response = await httpClient.DeleteAsync(definitiveRoute);
+
+        return await HttpResponseWrapper<RouteDto>.Create(response);
     }
 }
