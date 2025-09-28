@@ -6,6 +6,11 @@ public class Routes
     public static readonly string UserRoute = Environment.GetEnvironmentVariable("USER_ROUTE")
                                                    ?? "https://perla-metro-users-service.onrender.com:8080/api/users";
 
+    public static readonly string AuthRoute = Environment.GetEnvironmentVariable("USER_ROUTE")
+                                              ?? "https://perla-metro-users-service.onrender.com:8080/api/auth";
+
+
+    
     public const string RoutesRoute = "http://localhost:4000/api/routes";
 
     public static readonly string StationsRoute = Environment.GetEnvironmentVariable("STATIONS_ROUTE")
