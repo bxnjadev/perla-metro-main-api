@@ -10,8 +10,10 @@ builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IRouteService, RouteService>();
 builder.Services.AddScoped<IStationService, StationService>();
+
 
 var app = builder.Build();
 
