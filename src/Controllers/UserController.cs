@@ -13,7 +13,6 @@ public class UserController(IUserService userService) : ControllerBase
 {
     
     [HttpPost]
-    [Authorize]
     [Route("/api/users/create")]
     public async Task<ActionResult> Create(
         [FromBody] CreationUserRequest creationUser

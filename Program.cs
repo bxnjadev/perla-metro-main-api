@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using perla_metro_main_api.Dto;
 using perla_metro_main_api.Service;
 using perla_metro_main_api.src.Service;
 
@@ -14,6 +15,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRouteService, RouteService>();
 builder.Services.AddScoped<IStationService, StationService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 
 var jwtSecret = builder.Configuration["JWT:Secret"];
@@ -21,6 +23,8 @@ if (jwtSecret == null)
 {
     return;
 }
+
+Console.WriteLine(jwtSecret);
 
 builder.Services.AddAuthentication()
     .AddJwtBearer(options =>
