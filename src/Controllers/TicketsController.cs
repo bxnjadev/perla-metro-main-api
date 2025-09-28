@@ -21,7 +21,7 @@ public class TicketsController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost("crear")]
+    [HttpPost("create")]
     public async Task<ActionResult> CreateTicket([FromBody] CreateTicketRequest request)
     {
         var userResponse = await _userService.Find(request.PassengerId);
@@ -45,7 +45,7 @@ public class TicketsController : ControllerBase
 
     }
 
-    [HttpGet("obtener")]
+    [HttpGet("findAll")]
     public async Task<ActionResult> GetTickets([FromQuery] bool admin = false)
     {
         if (!admin)
@@ -58,7 +58,7 @@ public class TicketsController : ControllerBase
 
         return StatusCode((int)response.StatusCode, content);
     }
-    [HttpGet("buscar/{id}")]
+    [HttpGet("find/{id}")]
     public async Task<ActionResult> GetTicketById(string id)
     {
         var response = await _httpClient.GetAsync($"{TicketsServiceUrl}/buscar/{id}");
@@ -67,7 +67,7 @@ public class TicketsController : ControllerBase
         return StatusCode((int)response.StatusCode, content);
     }
 
-    [HttpPatch("actualizar/{id}")]
+    [HttpPatch("update/{id}")]
     public async Task<ActionResult> UpdateTicket(string id, [FromBody] EditTicket request)
     {
         var ticketPayload = new
@@ -83,7 +83,7 @@ public class TicketsController : ControllerBase
 
         return StatusCode((int)response.StatusCode, content);
     }
-    [HttpDelete("eliminar/{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<ActionResult> DeleteTicket(string id, [FromQuery] bool admin = false)
     {
         if (!admin)
@@ -96,7 +96,7 @@ public class TicketsController : ControllerBase
         return StatusCode((int)response.StatusCode, content);
     }
 
-    [HttpGet("crear")]
+    [HttpGet("create")]
     public async Task<ActionResult> CreateTicketInfo()
     {
         var response = await _httpClient.GetAsync($"{TicketsServiceUrl}/crear");
@@ -104,7 +104,7 @@ public class TicketsController : ControllerBase
         return StatusCode((int)response.StatusCode, content);
     }
 
-    [HttpGet("actualizar/{id}")]
+    [HttpGet("update/{id}")]
     public async Task<ActionResult> GetTicketByIdInfo(string id)
     {
         var response = await _httpClient.GetAsync($"{TicketsServiceUrl}/actualizar/{id}");
@@ -112,7 +112,7 @@ public class TicketsController : ControllerBase
         return StatusCode((int)response.StatusCode, content);
     }
 
-    [HttpGet("eliminar/{id}")]
+    [HttpGet("delete/{id}")]
     public async Task<ActionResult> DeleteTicketInfo(string id)
     {
         var response = await _httpClient.GetAsync($"{TicketsServiceUrl}/eliminar/{id}");
