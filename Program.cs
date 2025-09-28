@@ -1,4 +1,5 @@
 using perla_metro_main_api.Service;
+using perla_metro_main_api.src.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRouteService, RouteService>();
+builder.Services.AddScoped<IStationService, StationService>();
 
 var app = builder.Build();
 
