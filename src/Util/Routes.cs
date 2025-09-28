@@ -3,11 +3,13 @@
 public class Routes
 {
 
-    public const string UserRoute = "http://localhost:2020/api/users";
+    public static readonly string? UserRoute = Environment.GetEnvironmentVariable("USER_ROUTE");
 
     public const string RoutesRoute = "http://localhost:4000/api/routes";
 
-    public const string StationsRoute = "http://localhost:9090/api/stations";
+    public static readonly string? StationsRoute = Environment.GetEnvironmentVariable("STATIONS_ROUTE");
+    
+    public static readonly string? TicketsRoute = Environment.GetEnvironmentVariable("TICKETS_ROUTE");
     
     private Routes() {}
     
