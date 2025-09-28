@@ -8,47 +8,43 @@ public class RouteService(
     string route = Routes.RoutesRoute
 ) : IRouteService
 {
-    public async Task<HttpResponseWrapper<RouteDto>> Create(RouteDto routeDto)
+    public async Task<HttpResponseWrapper<CreationRouteRequest>> Create(CreationRouteRequest creationRoute)
     {
         var definitiveRoute = route + "/";
-
-        // previamente verificar si las estaciones existen
-
-        /*if ( estaciones existen){
-            return new await HttpResponseWrapper<RouteDto>("Las estaciones no existen", 404);
-        }*/
-
         var response = await httpClient.PostAsync(definitiveRoute, StringContentBuilder.Builder()
             .ContentTypeJson()
-            .Body(routeDto)
+            .Body(creationRoute)
             .Build()
         );
 
-        return await HttpResponseWrapper<RouteDto>.Create(response);
+        return await HttpResponseWrapper<CreationRouteRequest>.Create(response);
     }
 
-    public Task<HttpResponseWrapper<RouteDto>> Search()
+    public async Task<HttpResponseWrapper<CreationRouteRequest>> GetAll()
     {
-        throw new NotImplementedException();
+        var definitiveRoute = route + "/";
+        var response = await httpClient.GetAsync(definitiveRoute);
+
+        return await HttpResponseWrapper<CreationRouteRequest>.Create(response);
     }
 
-    public Task<HttpResponseWrapper<RouteDto>> Find(string uuid)
-    {
-        var definitiveRoute = route + "/" + uuid;
-        var response = httpClient.GetAsync(definitiveRoute);
-
-        return await HttpResponseWrapper<RouteDto>.Create(response);
-    }
-
-    public async Task<HttpResponseWrapper<RouteDto>> EditRoute(string uuid, EditRoute editRoute)
+    public async Task<HttpResponseWrapper<CreationRouteRequest>> Find(string uuid)
     {
         var definitiveRoute = route + "/" + uuid;
-        var response = httpClient.PutAsync(definitiveRoute, StringContentBuilder.Builder()
+        var response = await httpClient.GetAsync(definitiveRoute);
+
+        return await HttpResponseWrapper<CreationRouteRequest>.Create(response);
+    }
+
+    public async Task<HttpResponseWrapper<EditRoute>> EditRoute(string uuid, EditRoute editRoute)
+    {
+        var definitiveRoute = route + "/" + uuid;
+        var response = await httpClient.PutAsync(definitiveRoute, StringContentBuilder.Builder()
             .ContentTypeJson()
             .Body(editRoute)
             .Build());
             
-        return await HttpResponseWrapper<RouteDto>.Create(response);
+        return await HttpResponseWrapper<EditRoute>.Create(response);
     }
 
     public async Task<HttpResponseWrapper<RouteDto>> Delete(string uuid)
