@@ -6,14 +6,13 @@ namespace perla_metro_main_api.Service;
 public interface IRouteService
 {
 
-    Task<HttpResponseWrapper<RouteDto>> Create(RouteDto routeDto);
+    Task<HttpResponseWrapper<CreationRouteRequest>> Create(CreationRouteRequest creationRoute);
 
-    Task<HttpResponseWrapper<RouteDto>> Search();
+    Task<HttpResponseWrapper<CreationRouteRequest>> GetAll();
+    Task<HttpResponseWrapper<CreationRouteRequest>> Find(string id);
 
-    Task<HttpResponseWrapper<RouteDto>> Find(int id);
-
-    Task<HttpResponseWrapper<RouteDto>> EditRoute(int id, EditRoute editRoute);
+    Task<HttpResponseWrapper<EditRoute>> EditRoute(string id, EditRoute editRoute);
     
-    Task<HttpResponseWrapper<RouteDto>> Delete(int id);
+    Task<HttpResponseWrapper<RouteDto>> Delete(string id);
     
 }

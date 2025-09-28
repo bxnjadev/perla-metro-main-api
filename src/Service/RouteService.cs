@@ -3,47 +3,60 @@ using perla_metro_main_api.Util;
 
 namespace perla_metro_main_api.Service;
 
-public class RouteService(
-    HttpClient httpClient,
-    string route = Routes.RoutesRoute
-) : IRouteService
+public class RouteService : IRouteService
 {
-    public async Task<HttpResponseWrapper<RouteDto>> Create(RouteDto routeDto)
+    private readonly HttpClient _httpClient;
+    private readonly string _route;
+
+    public RouteService(HttpClient httpClient, string? route = null)
     {
-        var definitiveRoute = route + "/";
-
-        // previamente verificar si las rutas existen
-
-        /*if ( rutas existen){
-            return new await HttpResponseWrapper<RouteDto>("Las rutas no existen", 404);
-        }*/
-        
-        var response = await httpClient.PostAsync(definitiveRoute, StringContentBuilder.Builder()
+        _httpClient = httpClient;
+        _route = route ?? Routes.RoutesRoute;
+    }
+    public async Task<HttpResponseWrapper<CreationRouteRequest>> Create(CreationRouteRequest creationRoute)
+    {
+        var definitiveRoute = _route + "/";
+        var response = await _httpClient.PostAsync(definitiveRoute, StringContentBuilder.Builder()
             .ContentTypeJson()
-            .Body(routeDto)
+            .Body(creationRoute)
             .Build()
         );
 
+        return await HttpResponseWrapper<CreationRouteRequest>.Create(response);
+    }
+
+    public async Task<HttpResponseWrapper<CreationRouteRequest>> GetAll()
+    {
+        var definitiveRoute = _route + "/";
+        var response = await _httpClient.GetAsync(definitiveRoute);
+
+        return await HttpResponseWrapper<CreationRouteRequest>.Create(response);
+    }
+
+    public async Task<HttpResponseWrapper<CreationRouteRequest>> Find(string uuid)
+    {
+        var definitiveRoute = _route + "/" + uuid;
+        var response = await _httpClient.GetAsync(definitiveRoute);
+
+        return await HttpResponseWrapper<CreationRouteRequest>.Create(response);
+    }
+
+    public async Task<HttpResponseWrapper<EditRoute>> EditRoute(string uuid, EditRoute editRoute)
+    {
+        var definitiveRoute = _route + "/" + uuid;
+        var response = await _httpClient.PutAsync(definitiveRoute, StringContentBuilder.Builder()
+            .ContentTypeJson()
+            .Body(editRoute)
+            .Build());
+
+        return await HttpResponseWrapper<EditRoute>.Create(response);
+    }
+
+    public async Task<HttpResponseWrapper<RouteDto>> Delete(string uuid)
+    {
+        var definitiveRoute = _route + "/" + uuid;
+        var response = await _httpClient.DeleteAsync(definitiveRoute);
+
         return await HttpResponseWrapper<RouteDto>.Create(response);
-    }
-
-    public Task<HttpResponseWrapper<RouteDto>> Search()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<HttpResponseWrapper<RouteDto>> Find(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<HttpResponseWrapper<RouteDto>> EditRoute(int id, EditRoute editRoute)
-    { 
-        throw new NotImplementedException();
-    }
-
-    public Task<HttpResponseWrapper<RouteDto>> Delete(int id)
-    {
-        throw new NotImplementedException();
     }
 }
