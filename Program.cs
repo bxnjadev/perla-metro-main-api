@@ -1,5 +1,6 @@
 using perla_metro_main_api.Service;
 using perla_metro_main_api.src.Service;
+using perla_metro_main_api.src.Util;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
+builder.Services.AddJwtAuthentication(builder.Configuration); 
+builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
