@@ -5,7 +5,7 @@ public class Routes
 
     public const string UserRoute = "http://localhost:2020/api/users";
 
-    public const string RoutesRoute = "http://localhost:4000/api/routes";
+    public const string RoutesRoute = "https://perla-metro-routes-service-ksk5.onrender.com/api/routes";
     
     private Routes() {}
     

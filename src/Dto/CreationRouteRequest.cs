@@ -21,12 +21,12 @@ namespace perla_metro_main_api.Dto
 
         [Required(ErrorMessage = "La hora de inicio es obligatoria.")]
         [RegularExpression(@"^(?:[01]\d|2[0-3]):[0-5]\d$", 
-            ErrorMessage = "La hora de inicio debe estar en formato HH:mm entre 00:00 y 23:59")]
+        ErrorMessage = "La hora de inicio debe estar en formato HH:mm entre 00:00 y 23:59")]
         public string startTime { get; set; }
 
         [Required(ErrorMessage = "La hora de término es obligatoria.")]
         [RegularExpression(@"^(?:[01]\d|2[0-3]):[0-5]\d$", 
-            ErrorMessage = "La hora de término debe estar en formato HH:mm entre 00:00 y 23:59")]
+        ErrorMessage = "La hora de término debe estar en formato HH:mm entre 00:00 y 23:59")]
         public string endTime { get; set; }
 
         public bool IsActive { get; set; } = true;
