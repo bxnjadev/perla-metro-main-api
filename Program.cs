@@ -13,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IRouteService, RouteService>();
 builder.Services.AddScoped<IStationService, StationService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -39,6 +40,7 @@ builder.Services.AddAuthentication()
     });
 
 builder.Services.AddAuthorization();
+
 
 
 var app = builder.Build();
