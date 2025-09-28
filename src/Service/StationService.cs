@@ -11,10 +11,10 @@ namespace perla_metro_main_api.src.Service
         private readonly HttpClient _httpClient;
         private readonly string _route;
 
-        public StationService(HttpClient httpClient, string route = Routes.StationsRoute)
+        public StationService(HttpClient httpClient, string? route = null)
         {
             _httpClient = httpClient;
-            _route = route;
+            _route = route ?? Routes.StationsRoute;
         }
         public async Task<HttpResponseWrapper<GetStationResponse>> GetAll(StationQuery query)
         {
