@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using perla_metro_main_api.src.Dto;
 using perla_metro_main_api.Service;
 using perla_metro_main_api.src.Util;
+using Microsoft.AspNetCore.Authorization;
 
 namespace perla_metro_main_api.src.Controllers
 {
@@ -18,7 +19,7 @@ namespace perla_metro_main_api.src.Controllers
 
         // GET: api/station
         [HttpGet]
-        // [Authorize(Roles = "Admin")] //TODO:
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAll([FromQuery] StationQuery query)
         {
             var response = await _stationService.GetAll(query);
@@ -63,7 +64,7 @@ namespace perla_metro_main_api.src.Controllers
 
         // DELETE: api/station/{id}
         [HttpDelete("{id:guid}")]
-        // [Authorize(Roles = "Admin")] TODO:
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var response = await _stationService.Delete(id);
