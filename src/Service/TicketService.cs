@@ -9,7 +9,7 @@ public class TicketService : ITicketService
     private readonly HttpClient _httpClient;
     private readonly IUserService _userService;
 
-    private const string TicketBaseUrl = Routes.TicketRoute;
+    private static readonly string TicketBaseUrl = Routes.TicketsRoute;
 
     public TicketService(HttpClient httpClient, IUserService userService)
     {
@@ -21,11 +21,6 @@ public class TicketService : ITicketService
     {
         try
         {
-            var userResponse = await _userService.Find(request.PassengerId);
-            if (userResponse.GetStatusCode() != 200)
-            {
-                return new HttpResponseWrapper<TicketDto>("El usuario especificado no existe", 404);
-            }
             var payload = new
             {
                 passengerId = request.PassengerId,
@@ -34,7 +29,7 @@ public class TicketService : ITicketService
                 status = request.Status,
                 paid = request.Paid
             };
-            var response = await _httpClient.PostAsJsonAsync(TicketBaseUrl, payload);
+            var response = await _httpClient.PostAsJsonAsync($"{TicketBaseUrl}/create", payload);
             return await HttpResponseWrapper<TicketDto>.Create(response);
         }
         catch (Exception ex)
@@ -51,7 +46,10 @@ public class TicketService : ITicketService
             {
                 return new HttpResponseWrapper<TicketDto>("Acceso denegado. Solo los administradores pueden ver todos los tickets", 403);
             }
-            var response = await _httpClient.GetAsync($"{TicketBaseUrl}?admin={isAdmin}");
+            string adminParam = isAdmin.ToString().ToLower();
+            string url = $"{TicketBaseUrl}/findAll?admin={adminParam}";
+
+            var response = await _httpClient.GetAsync(url);
             return await HttpResponseWrapper<TicketDto>.Create(response);
         }
         catch (Exception ex)
@@ -64,7 +62,7 @@ public class TicketService : ITicketService
     {
         try
         {
-            var response = await _httpClient.GetAsync($"{TicketBaseUrl}/{id}");
+            var response = await _httpClient.GetAsync($"{TicketBaseUrl}/find/{id}");
             return await HttpResponseWrapper<TicketDto>.Create(response);
         }
         catch (Exception ex)
@@ -84,7 +82,7 @@ public class TicketService : ITicketService
                 status = request.Status,
                 paid = request.Paid
             };
-            var response = await _httpClient.PatchAsJsonAsync($"{TicketBaseUrl}/{id}", payload);
+            var response = await _httpClient.PatchAsJsonAsync($"{TicketBaseUrl}/update/{id}", payload);
             return await HttpResponseWrapper<TicketDto>.Create(response);
         }
         catch (Exception ex)
@@ -97,7 +95,7 @@ public class TicketService : ITicketService
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"{TicketBaseUrl}/{id}?admin=true");
+            var response = await _httpClient.DeleteAsync($"{TicketBaseUrl}/delete/{id}?admin=true");
             return await HttpResponseWrapper<TicketDto>.Create(response);
         }
         catch (Exception ex)
