@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.Extensions;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using perla_metro_main_api.Dto;
 using perla_metro_main_api.Service;
@@ -25,6 +26,7 @@ public class UserController(IUserService userService) : ControllerBase
     }
     
     [HttpGet]
+    [Authorize]
     [Route("/api/users/find/{uuid}")]
     public async Task<ActionResult<UserDto>> Find(
         string uuid)
@@ -37,6 +39,7 @@ public class UserController(IUserService userService) : ControllerBase
     }
     
     [HttpDelete]
+    [Authorize]
     [Route("/api/users/delete/{uuid}")]
     public async Task<ActionResult<UserDto>> Delete(
         string uuid
@@ -51,6 +54,7 @@ public class UserController(IUserService userService) : ControllerBase
     }
     
     [HttpPut]
+    [Authorize]
     [Route("/api/users/edit/{uuid}")]
     public async Task<ActionResult<UserDto>> Edit(
         string uuid,
@@ -66,6 +70,7 @@ public class UserController(IUserService userService) : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     [Route("/api/users/search")]
     public async Task<ActionResult<ICollection<UserDto>>> Search(
         [FromQuery] string? name,

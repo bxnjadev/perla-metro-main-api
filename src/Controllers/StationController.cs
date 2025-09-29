@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using perla_metro_main_api.src.Dto;
 using perla_metro_main_api.Service;
@@ -18,6 +19,7 @@ namespace perla_metro_main_api.src.Controllers
 
         // GET: api/station
         [HttpGet]
+        [Authorize]
         // [Authorize(Roles = "Admin")] //TODO:
         public async Task<IActionResult> GetAll([FromQuery] StationQuery query)
         {
@@ -30,6 +32,7 @@ namespace perla_metro_main_api.src.Controllers
 
         // GET: api/station/{id}
         [HttpGet("{id:guid}")]
+        [Authorize]
         public async Task<IActionResult> GetById(Guid id)
         {
             var response = await _stationService.GetById(id);
@@ -41,6 +44,7 @@ namespace perla_metro_main_api.src.Controllers
 
         // POST: api/station
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateStationRequest createStation)
         {
             var response = await _stationService.Create(createStation);
@@ -52,6 +56,7 @@ namespace perla_metro_main_api.src.Controllers
 
         // PUT: api/station/{id}
         [HttpPut("{id:guid}")]
+        [Authorize]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateStationRequest updateStation)
         {
             var response = await _stationService.Update(id, updateStation);
@@ -64,6 +69,7 @@ namespace perla_metro_main_api.src.Controllers
         // DELETE: api/station/{id}
         [HttpDelete("{id:guid}")]
         // [Authorize(Roles = "Admin")] TODO:
+        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
             var response = await _stationService.Delete(id);
