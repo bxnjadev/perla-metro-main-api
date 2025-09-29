@@ -9,7 +9,7 @@ public class Routes
 
 
    
-    public static readonly string AuthRoute = Environment.GetEnvironmentVariable("USER_ROUTE")
+    public static readonly string AuthRoute = Environment.GetEnvironmentVariable("AUTH_ROUTE")
                                               ?? "https://perla-metro-users-service.onrender.com:8080/api/auth";
 
 
