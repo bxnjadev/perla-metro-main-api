@@ -11,7 +11,6 @@ public class AuthController(IAuthenticationService authenticationService) : Cont
     
         
     [HttpPost]
-    [Route("/api/users/auth")]
     public async Task<ActionResult> Create(
         [FromBody] Credentials credentials
     )
