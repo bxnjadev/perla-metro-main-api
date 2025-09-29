@@ -16,6 +16,8 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task<HttpResponseWrapper<string>> Login(Credentials credentials)
     {
+        Console.WriteLine("Lanzado una llamada a: ");
+        Console.WriteLine(_route);
         var response = await _httpClient.PostAsync(_route, StringContentBuilder.Builder()
             .ContentTypeJson()
             .Body(credentials).
