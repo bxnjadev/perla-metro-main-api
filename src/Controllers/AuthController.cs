@@ -10,6 +10,12 @@ public class AuthController(IAuthenticationService authenticationService) : Cont
 {
     
         
+    /// <summary>
+    /// HTTP Method for authenticate with system
+    /// </summary>
+    /// <param name="credentials">A group credentials</param>
+    /// <returns>A response with data JWT</returns>
+    
     [HttpPost]
     public async Task<ActionResult> Create(
         [FromBody] Credentials credentials
