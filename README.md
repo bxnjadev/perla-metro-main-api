@@ -19,6 +19,23 @@ It acts as a **gateway**, forwarding requests to the appropriate microservices:
 
 ---
 
+## Arquitectura
+La arquitectura del sistema se diseñó bajo el paradigma de Arquitectura Orientada a Servicios (SOA), 
+la cual se caracteriza por exponer las funcionalidades principales de la aplicación como servicios independientes,
+interoperables y reutilizables.
+
+## Patrones de Diseño
+En la implementación del proyecto se aplicaron diferentes *patrones de diseño* para garantizar la separación de responsabilidades, la reutilización de componentes y la mantenibilidad del sistema.
+
+### DAO (Data Access Object)
+El patrón *DAO* permite abstraer y encapsular el acceso a la base de datos, evitando que la lógica de negocio interactúe directamente con las consultas SQL o con la tecnología de persistencia.
+
+### DTO (Data Transfer Object)
+El patrón *DTO* se emplea para transportar datos entre las capas de la aplicación sin exponer directamente las entidades del dominio.
+
+### Repository
+El patrón *Repository* actúa como un intermediario entre la lógica de negocio y la capa de persistencia, simulando una colección en memoria que abstrae las operaciones sobre la base de datos.
+
 ## 🏗️ Project Structure
 
 * **Controllers/**
