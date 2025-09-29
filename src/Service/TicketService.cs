@@ -21,6 +21,8 @@ public class TicketService : ITicketService
     {
         try
         {
+            Console.WriteLine(userName);
+            Console.WriteLine(userId);
             var payload = new
             {
 
@@ -29,8 +31,6 @@ public class TicketService : ITicketService
                 type = request.Type,
                 status = request.Status,
                 paid = request.Paid,
-                user = userId,
-                Name = userName
             };
             var response = await _httpClient.PostAsJsonAsync($"{TicketBaseUrl}/create", payload);
             return await HttpResponseWrapper<TicketDto>.Create(response);

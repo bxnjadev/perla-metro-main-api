@@ -27,33 +27,29 @@ public class TicketsController : ControllerBase
     }
 
     [HttpPost("create")]
-    [Authorize] 
+    [Authorize(Roles = "Admin")] 
     public async Task<ActionResult> CreateTicket([FromBody] CreateTicketRequest request)
     {
-        var userId = User.FindFirst("id")?.Value;
+        
+
+        var userId = User.FindFirst("Id")?.Value;
         var name = User.FindFirst(ClaimTypes.Name)?.Value;
         if (string.IsNullOrEmpty(userId))
         {
             return Unauthorized("No se pudo obtener el ID del usuario del token.");
         }
+        
         var response = await _ticketService.Create(request, userId, name);
         return StatusCode(response.GetStatusCode(), response.GetContent());
 
     }
 
     [HttpGet("findAll")]
-    [Authorize]
-    public async Task<ActionResult> GetTickets([FromQuery] bool admin = false)
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult> GetTickets()
     {
-        var userRole = User.FindFirst("role")?.Value ?? User.FindFirst(ClaimTypes.Role)?.Value;
-        var isAdmin = userRole?.ToLower() == "admin"|| User.IsInRole("admin");
 
-        if (!admin || !isAdmin)
-        {
-            return Forbid("Acceso denegado. Solo los administradores pueden ver todos los tickets");
-        }
-
-        var response = await _ticketService.GetAll(admin);
+        var response = await _ticketService.GetAll(true);
         return StatusCode(response.GetStatusCode(), response.GetContent());
     }
 
@@ -74,16 +70,9 @@ public class TicketsController : ControllerBase
     }
     
     [HttpDelete("delete/{id}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult> DeleteTicket(string id, [FromQuery] bool admin = false)
     {
-        var userRole = User.FindFirst("role")?.Value ?? User.FindFirst(ClaimTypes.Role)?.Value;
-        var isAdmin = userRole?.ToLower() == "admin" || User.IsInRole("admin");
-
-        if (!admin || !isAdmin)
-        {
-            return Forbid ("El parámetro 'admin' debe ser true para acceder a esta ruta.");
-        }
 
         var response = await _ticketService.SoftDelete(id);
 
