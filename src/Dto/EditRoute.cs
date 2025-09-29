@@ -8,13 +8,13 @@ public class EditRoute
 {
     [Required(ErrorMessage = "El origen es obligatorio.")]
     [StringLength(200, ErrorMessage = "El origen no puede exceder los 200 caracteres.")]
-    public string origin { get; set; }
+    public string originId { get; set; }
 
     [Required(ErrorMessage = "El destino es obligatorio.")]
     [StringLength(200, ErrorMessage = "El destino no puede exceder los 200 caracteres.")]
-    public string destination { get; set; }
+    public string destinationId { get; set; }
 
-    public List<string> stops { get; set; } = new();
+    public List<string> stopsIds { get; set; } = new();
 
     [Required(ErrorMessage = "La hora de inicio es obligatoria.")]
     [RegularExpression(@"^(?:[01]\d|2[0-3]):[0-5]\d$", 

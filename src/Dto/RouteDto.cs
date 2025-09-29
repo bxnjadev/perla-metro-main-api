@@ -2,10 +2,10 @@
 
 public class RouteDto
 {
-    public string origin { get; set; }
-    public string destination { get; set; }
+    public string originId { get; set; }
+    public string destinationId { get; set; }
 
-    public string[] stops { get; set; }
+    public string[] stopsIds { get; set; }
 
     public string startTime { get; set; }
 
