@@ -12,7 +12,6 @@ namespace perla_metro_main_api.Controllers;
 public class RouteController(IRouteService routeService) : ControllerBase
 {
     [HttpPost]
-    [Authorize]
     [Route("/api/routes/create")]
     public async Task<ActionResult> Create(
         [FromBody] CreationRouteRequest creationRoute
@@ -26,7 +25,7 @@ public class RouteController(IRouteService routeService) : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [Route("/api/routes/find/{id}")]
     public async Task<IActionResult> Find(string id)
     {
@@ -38,7 +37,6 @@ public class RouteController(IRouteService routeService) : ControllerBase
     }
 
     [HttpPut]
-    [Authorize]
     [Route("/api/routes/edit/{uuid}")]
     public async Task<IActionResult> Edit(string uuid, [FromBody] EditRoute editRoute)
     {
@@ -50,7 +48,7 @@ public class RouteController(IRouteService routeService) : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [Route("/api/routes/all")]
     public async Task<IActionResult> GetAllRoutes()
     {
@@ -62,7 +60,7 @@ public class RouteController(IRouteService routeService) : ControllerBase
     }
 
     [HttpDelete]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [Route("/api/routes/delete/{id}")]
     public async Task<IActionResult> DeleteRoute(string id)
     {
