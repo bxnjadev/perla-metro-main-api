@@ -5,7 +5,7 @@ namespace perla_metro_main_api.Service;
 
 public interface ITicketService
 {
-    Task<HttpResponseWrapper<TicketDto>> Create(CreateTicketRequest createTicketRequest);
+    Task<HttpResponseWrapper<TicketDto>> Create(CreateTicketRequest createTicketRequest,string? userId , string? userName);
     Task<HttpResponseWrapper<TicketDto>> GetAll(bool isAdmin);
 
     Task<HttpResponseWrapper<TicketDto>> GetById(string id);

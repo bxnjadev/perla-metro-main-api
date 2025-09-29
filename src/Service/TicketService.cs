@@ -17,7 +17,7 @@ public class TicketService : ITicketService
         _userService = userService;
     }
 
-    public async Task<HttpResponseWrapper<TicketDto>> Create(CreateTicketRequest request)
+    public async Task<HttpResponseWrapper<TicketDto>> Create(CreateTicketRequest request, string? userId, string? userName)
     {
         try
         {
