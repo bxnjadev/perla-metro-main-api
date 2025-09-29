@@ -27,12 +27,17 @@ public class TicketsController : ControllerBase
     }
 
     [HttpPost("create")]
+    [Authorize] 
     public async Task<ActionResult> CreateTicket([FromBody] CreateTicketRequest request)
     {
         var userId = User.FindFirst("id")?.Value;
         var name = User.FindFirst(ClaimTypes.Name)?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized("No se pudo obtener el ID del usuario del token.");
+        }
         var response = await _ticketService.Create(request, userId, name);
-        return StatusCode(response.GetStatusCode(),response.GetContent());
+        return StatusCode(response.GetStatusCode(), response.GetContent());
 
     }
 
