@@ -16,6 +16,12 @@ namespace perla_metro_main_api.src.Controllers
         {
             _stationService = stationService;
         }
+        
+        /// <summary>
+        /// Retrieve all stations from a query
+        /// </summary>
+        /// <param name="query">A group filters for query</param>
+        /// <returns>A group stations</returns>
 
         // GET: api/station
         [HttpGet]
@@ -29,6 +35,13 @@ namespace perla_metro_main_api.src.Controllers
             return StatusCode(statusCode, content);
         }
 
+        
+        /// <summary>
+        /// Find a station from id
+        /// </summary>
+        /// <param name="id">The id for found</param>
+        /// <returns>A station founded</returns>
+        
         // GET: api/station/{id}
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
@@ -39,6 +52,12 @@ namespace perla_metro_main_api.src.Controllers
 
             return StatusCode(statusCode, content);
         }
+        
+        /// <summary>
+        /// Create a new station from the request
+        /// </summary>
+        /// <param name="createStation">The create request DTO</param>
+        /// <returns>The station created</returns>
 
         // POST: api/station
         [HttpPost]
@@ -51,6 +70,13 @@ namespace perla_metro_main_api.src.Controllers
             return StatusCode(statusCode, content);
         }
 
+        /// <summary>
+        /// Update a data station from a group parameters
+        /// </summary>
+        /// <param name="id">The id station for update</param>
+        /// <param name="updateStation">A group parameters from update</param>
+        /// <returns>The entity updated</returns>
+        
         // PUT: api/station/{id}
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateStationRequest updateStation)
@@ -62,6 +88,12 @@ namespace perla_metro_main_api.src.Controllers
             return StatusCode(statusCode, content);
         }
 
+        /// <summary>
+        /// Delete a station from uuid 
+        /// </summary>
+        /// <param name="id">the id for delete</param>
+        /// <returns>The entity station deleted</returns>
+        
         // DELETE: api/station/{id}
         [HttpDelete("{id:guid}")]
         [Authorize(Roles = "Admin")]

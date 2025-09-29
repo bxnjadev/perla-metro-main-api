@@ -25,7 +25,13 @@ public class TicketsController : ControllerBase
         _userService = userService;
         _ticketService = ticketService;
     }
-
+    
+    /// <summary>
+    /// Create a new ticket from request DTO
+    /// </summary>
+    /// <param name="request">The request creation DTO</param>
+    /// <returns>A object created</returns>
+    
     [HttpPost("create")]
     [Authorize(Roles = "Admin")] 
     public async Task<ActionResult> CreateTicket([FromBody] CreateTicketRequest request)
@@ -43,7 +49,12 @@ public class TicketsController : ControllerBase
         return StatusCode(response.GetStatusCode(), response.GetContent());
 
     }
-
+    
+    /// <summary>
+    /// Find all tickets 
+    /// </summary>
+    /// <returns>A group tickets founded</returns>
+    
     [HttpGet("findAll")]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult> GetTickets()
@@ -53,6 +64,12 @@ public class TicketsController : ControllerBase
         return StatusCode(response.GetStatusCode(), response.GetContent());
     }
 
+    /// <summary>
+    /// Retrieve a ticket from id
+    /// </summary>
+    /// <param name="id">The ticket id</param>
+    /// <returns>A ticket founded</returns>
+    
     [HttpGet("find/{id}")]
     public async Task<ActionResult> GetTicketById(string id)
     {
@@ -60,6 +77,13 @@ public class TicketsController : ControllerBase
 
         return StatusCode(response.GetStatusCode(), response.GetContent());
     }
+    
+    /// <summary>
+    /// Updated all ticket from id 
+    /// </summary>
+    /// <param name="id">the ticket id</param>
+    /// <param name="request">a group parameters</param>
+    /// <returns></returns>
 
     [HttpPatch("update/{id}")]
     public async Task<ActionResult> UpdateTicket(string id, [FromBody] EditTicket request)
